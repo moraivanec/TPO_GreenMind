@@ -4,27 +4,27 @@
 ## Características principales
 
 **Autenticación**
-Acceso seguro mediante Google Sign-In con Firebase Authentication.
+- Acceso seguro mediante Google Sign-In con Firebase Authentication.
 
 **Exploración de especies de plantas**
-Listado dinámico y búsqueda de plantas consumiendo la API de Perenual.
+- Listado dinámico y búsqueda de plantas consumiendo la API de Perenual.
 
 **Mi Jardín**
-Gestión de un jardín virtual con acceso offline mediante Room y sincronización en la nube con Firebase Firestore.
+- Gestión de un jardín virtual con acceso offline mediante Room y sincronización en la nube con Firebase Firestore.
 
 **Asistente IA**
-Chat inteligente integrado con Google Gemini para consultas personalizadas sobre botánica.
+- Chat inteligente integrado con Google Gemini para consultas personalizadas sobre botánica.
 
 ## Arquitectura y tecnologías
 
-**Lenguaje**: Kotlin
-**Interfaz**: Jetpack Compose (LazyColumn, manejo de estados)
-**Networking**: Retrofit (consumo de API REST)
-**Imágenes**: Glide (renderizado y optimización)
-**Persistencia**:
-- Room (local)
-- Firebase Firestore (nube)
+- **Lenguaje**: Kotlin
+- **Interfaz**: Jetpack Compose (LazyColumn, manejo de estados)
+- **Networking**: Retrofit (consumo de API REST)
+- **Imágenes**: Glide (renderizado y optimización)
+- **Persistencia**:
+   - Room (local)
+   - Firebase Firestore (nube)
 
 ## Plataforma
-Android - App nativa
+- Android - App nativa
 
