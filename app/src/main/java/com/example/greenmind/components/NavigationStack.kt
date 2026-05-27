@@ -42,7 +42,10 @@ fun NavigationStack(
             val stringId = it.arguments?.getString("plantId")
             val id = stringId?.toInt() ?: 0
 
-            PlantDetailScreen(id)
+            PlantDetailScreen(
+                plantId = id,
+                navController = navController
+            )
         }
     }
 }

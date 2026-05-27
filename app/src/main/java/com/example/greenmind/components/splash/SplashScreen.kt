@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,7 +51,7 @@ fun SplashScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFEAF7EC)),
+            .background(Color(0xFFF4F6F1)),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -62,29 +61,15 @@ fun SplashScreen(
             Image(
                 painter = painterResource(id = R.drawable.logo_greenmind),
                 contentDescription = "Logo GreenMind",
-                modifier = Modifier.size(120.dp)
+                modifier = Modifier.size(130.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = "GreenMind",
                 style = MaterialTheme.typography.headlineMedium,
-                color = Color(0xFF1B5E20)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Tu asistente de jardinería",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF4E6B50)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            CircularProgressIndicator(
-                color = Color(0xFF2E7D32)
+                color = Color(0xFF557B45)
             )
         }
     }
