@@ -1,0 +1,91 @@
+package com.example.greenmind.components.splash
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.greenmind.R
+import com.example.greenmind.components.Screen
+import kotlinx.coroutines.delay
+
+@Composable
+fun SplashScreen(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    vm: SplashScreenViewModel = viewModel()
+) {
+    LaunchedEffect(Unit) {
+        delay(2000)
+
+        if (vm.isUserLogged()) {
+            navController.navigate(Screen.PlantList.route) {
+                popUpTo(Screen.Splash.route) {
+                    inclusive = true
+                }
+            }
+        } else {
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Splash.route) {
+                    inclusive = true
+                }
+            }
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color(0xFFEAF7EC)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_greenmind),
+                contentDescription = "Logo GreenMind",
+                modifier = Modifier.size(120.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "GreenMind",
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color(0xFF1B5E20)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Tu asistente de jardinería",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color(0xFF4E6B50)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CircularProgressIndicator(
+                color = Color(0xFF2E7D32)
+            )
+        }
+    }
+}
