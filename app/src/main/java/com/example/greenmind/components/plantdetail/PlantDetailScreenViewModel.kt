@@ -37,18 +37,21 @@ class PlantDetailScreenViewModel(
             _uiState.update {
                 it.copy(
                     isLoading = true,
-                    errorMessage = null
+                    errorMessage = null,
+                    savedMessage = null
                 )
             }
 
             try {
                 val plant = plantRepository.fetchPlantDetail(id)
+                val isSaved = plantRepository.isPlantSaved(id)
 
                 _uiState.update {
                     it.copy(
                         isLoading = false,
                         plant = plant,
-                        errorMessage = null
+                        errorMessage = null,
+                        isSaved = isSaved
                     )
                 }
 
@@ -56,10 +59,51 @@ class PlantDetailScreenViewModel(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "No se pudo cargar el detalle de la planta."
+                        errorMessage = "No se pudo cargar el detalle de la planta"
                     )
                 }
             }
+        }
+    }
+
+    fun togglePlantInGarden() {
+        viewModelScope.launch {
+            val plant = _uiState.value.plant ?: return@launch
+
+            try {
+                if (_uiState.value.isSaved) {
+                    plantRepository.removePlantFromGarden(plant.id)
+
+                    _uiState.update {
+                        it.copy(
+                            isSaved = false,
+                            savedMessage = "Planta quitada de Mi Jardín"
+                        )
+                    }
+                } else {
+                    plantRepository.savePlantInGarden(plant)
+
+                    _uiState.update {
+                        it.copy(
+                            isSaved = true,
+                            savedMessage = "Planta guardada en Mi Jardín"
+                        )
+                    }
+                }
+
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        savedMessage = "No se pudo actualizar Mi Jardín"
+                    )
+                }
+            }
+        }
+    }
+
+    fun clearSavedMessage() {
+        _uiState.update {
+            it.copy(savedMessage = null)
         }
     }
 }

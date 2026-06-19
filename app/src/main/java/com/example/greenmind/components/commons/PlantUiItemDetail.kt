@@ -37,8 +37,10 @@ import com.example.greenmind.data.PlantDetail
 @Composable
 fun PlantUiItemDetail(
     plant: PlantDetail,
+    isSaved: Boolean,
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -98,15 +100,15 @@ fun PlantUiItemDetail(
                     .clip(CircleShape)
                     .background(Color.White)
                     .clickable {
-                        // Más adelante acá va la lógica para guardar/quitar de Mi Jardín
+                        onSaveClick()
                     }
                     .align(Alignment.TopEnd),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "♥",
+                    text = if (isSaved) "♥" else "♡",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Color(0xFFD71920)
+                    color = if (isSaved) Color(0xFFD71920) else Color(0xFF557B45)
                 )
             }
         }
@@ -198,19 +200,19 @@ fun PlantUiItemDetail(
 
             Button(
                 onClick = {
-                    // Más adelante acá va la lógica para guardar en Mi Jardín
+                    onSaveClick()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF557B45)
+                    containerColor = if (isSaved) Color(0xFFDDE8D8) else Color(0xFF557B45)
                 )
             ) {
                 Text(
-                    text = "Guardar en Mi Jardín",
-                    color = Color.White,
+                    text = if (isSaved) "♡ Quitar de Mi Jardín" else "♡ Guardar en Mi Jardín",
+                    color = if (isSaved) Color(0xFF557B45) else Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -258,3 +260,4 @@ fun DetailCard(
         }
     }
 }
+
