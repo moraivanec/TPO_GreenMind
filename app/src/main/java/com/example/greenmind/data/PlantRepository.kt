@@ -2,6 +2,7 @@ package com.example.greenmind.data
 
 import com.example.greenmind.data.local.GreenMindDatabaseProvider
 import com.example.greenmind.data.local.toLocal
+import com.example.greenmind.data.local.toPlantDetailExternal
 import com.example.greenmind.domain.IPlantRepository
 
 class PlantRepository(
@@ -38,5 +39,14 @@ class PlantRepository(
         return dbLocal
             .plantDao()
             .getSavedPlantById(id) != null
+    }
+
+    override suspend fun getSavedPlants(): List<PlantDetail> {
+        val dbLocal = GreenMindDatabaseProvider.dbLocal
+
+        return dbLocal
+            .plantDao()
+            .getSavedPlants()
+            .toPlantDetailExternal()
     }
 }

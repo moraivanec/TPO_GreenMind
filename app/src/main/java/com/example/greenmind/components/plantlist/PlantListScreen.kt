@@ -2,6 +2,8 @@ package com.example.greenmind.components.plantlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -141,7 +143,7 @@ fun PlantListScreen(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .padding(horizontal = 22.dp)
         ) {
             Spacer(modifier = Modifier.height(20.dp))
@@ -198,5 +200,103 @@ fun PlantListScreen(
                 }
             }
         }
+
+        GreenMindBottomBar(
+            selectedRoute = Screen.PlantList.route,
+            onHomeClick = {
+                navController.navigate(Screen.PlantList.route) {
+                    launchSingleTop = true
+                }
+            },
+            onSearchClick = {
+                // Más adelante va la pantalla Buscar
+            },
+            onMiJardinClick = {
+                navController.navigate(Screen.MiJardin.route) {
+                    launchSingleTop = true
+                }
+            },
+            onChatClick = {
+                // Más adelante va el Chat con IA
+            }
+        )
+    }
+}
+
+@Composable
+fun GreenMindBottomBar(
+    selectedRoute: String,
+    onHomeClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onMiJardinClick: () -> Unit,
+    onChatClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(66.dp)
+            .background(Color.White)
+            .padding(horizontal = 10.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        BottomBarItem(
+            icon = "⌂",
+            label = "Inicio",
+            isSelected = selectedRoute == Screen.PlantList.route,
+            onClick = onHomeClick
+        )
+
+        BottomBarItem(
+            icon = "⌕",
+            label = "Buscar",
+            isSelected = false,
+            onClick = onSearchClick
+        )
+
+        BottomBarItem(
+            icon = "🌱",
+            label = "Mi Jardín",
+            isSelected = selectedRoute == Screen.MiJardin.route,
+            onClick = onMiJardinClick
+        )
+
+        BottomBarItem(
+            icon = "□",
+            label = "Chat IA",
+            isSelected = false,
+            onClick = onChatClick
+        )
+    }
+}
+
+@Composable
+fun BottomBarItem(
+    icon: String,
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val color = if (isSelected) Color(0xFF557B45) else Color(0xFF222222)
+
+    Column(
+        modifier = Modifier
+            .clickable {
+                onClick()
+            }
+            .padding(horizontal = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = icon,
+            style = MaterialTheme.typography.titleMedium,
+            color = color
+        )
+
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = color
+        )
     }
 }

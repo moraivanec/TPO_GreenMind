@@ -14,4 +14,6 @@ interface IPlantRepository {
     suspend fun removePlantFromGarden(id: Int)
 
     suspend fun isPlantSaved(id: Int): Boolean
+
+    suspend fun getSavedPlants(): List<PlantDetail>
 }
