@@ -209,7 +209,9 @@ fun PlantListScreen(
                 }
             },
             onSearchClick = {
-                // Más adelante va la pantalla Buscar
+                navController.navigate(Screen.Buscar.route) {
+                    launchSingleTop = true
+                }
             },
             onMiJardinClick = {
                 navController.navigate(Screen.MiJardin.route) {
@@ -250,7 +252,7 @@ fun GreenMindBottomBar(
         BottomBarItem(
             icon = "⌕",
             label = "Buscar",
-            isSelected = false,
+            isSelected = selectedRoute == Screen.Buscar.route,
             onClick = onSearchClick
         )
 

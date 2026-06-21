@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.greenmind.components.buscar.BuscarScreen
 import com.example.greenmind.components.login.LoginScreen
 import com.example.greenmind.components.mijardin.MiJardinScreen
 import com.example.greenmind.components.plantdetail.PlantDetailScreen
@@ -36,6 +37,12 @@ fun NavigationStack(
             PlantListScreen(
                 navController = navController,
                 onLogoutClick = onLogoutClick
+            )
+        }
+
+        composable(Screen.Buscar.route) {
+            BuscarScreen(
+                navController = navController
             )
         }
 

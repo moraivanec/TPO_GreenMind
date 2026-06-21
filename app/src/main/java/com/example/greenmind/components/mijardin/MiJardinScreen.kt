@@ -156,7 +156,9 @@ fun MiJardinScreen(
                 }
             },
             onSearchClick = {
-                // Más adelante va la pantalla Buscar
+                navController.navigate(Screen.Buscar.route) {
+                    launchSingleTop = true
+                }
             },
             onMiJardinClick = {
                 navController.navigate(Screen.MiJardin.route) {
