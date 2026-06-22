@@ -10,4 +10,6 @@ sealed class Screen(val route: String) {
     object MiJardin : Screen("mi_jardin")
 
     object Buscar : Screen("buscar")
+
+    object ChatIA : Screen("chat_ia")
 }

@@ -38,7 +38,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.greenmind.components.Screen
-import com.example.greenmind.components.plantlist.GreenMindBottomBar
+import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.data.PlantDetail
 
 @Composable
@@ -166,7 +166,9 @@ fun MiJardinScreen(
                 }
             },
             onChatClick = {
-                // Más adelante va Chat IA
+                navController.navigate(Screen.ChatIA.route) {
+                    launchSingleTop = true
+                }
             }
         )
     }

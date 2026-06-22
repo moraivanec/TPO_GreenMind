@@ -16,7 +16,7 @@ retrofit = "2.11.0"
 converterGson = "2.11.0"
 glideCompose = "1.0.0-beta01"
 
-firebaseBom = "33.10.0"
+firebaseBom = "34.15.0"
 playServicesAuth = "21.3.0"
 googleServices = "4.4.2"
 
@@ -51,6 +51,8 @@ glide-compose = { group = "com.github.bumptech.glide", name = "compose", version
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+
+firebase-ai = { group = "com.google.firebase", name = "firebase-ai" }
 
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 

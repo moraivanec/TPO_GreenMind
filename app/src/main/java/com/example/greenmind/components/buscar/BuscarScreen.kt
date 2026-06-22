@@ -29,8 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.Screen
+import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.components.commons.PlantUIList
-import com.example.greenmind.components.plantlist.GreenMindBottomBar
 
 @Composable
 fun BuscarScreen(
@@ -170,7 +170,9 @@ fun BuscarScreen(
                 }
             },
             onChatClick = {
-                // Acá va el Chat con IA
+                navController.navigate(Screen.ChatIA.route) {
+                    launchSingleTop = true
+                }
             }
         )
     }

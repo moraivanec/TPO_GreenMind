@@ -76,6 +76,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.ai)
 
     // Google Sign In
     implementation(libs.play.services.auth)

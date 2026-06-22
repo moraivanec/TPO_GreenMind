@@ -11,6 +11,7 @@ import com.example.greenmind.components.mijardin.MiJardinScreen
 import com.example.greenmind.components.plantdetail.PlantDetailScreen
 import com.example.greenmind.components.plantlist.PlantListScreen
 import com.example.greenmind.components.splash.SplashScreen
+import com.example.greenmind.components.chatia.ChatIAScreen
 
 @Composable
 fun NavigationStack(
@@ -58,6 +59,12 @@ fun NavigationStack(
 
             PlantDetailScreen(
                 plantId = id,
+                navController = navController
+            )
+        }
+
+        composable(Screen.ChatIA.route) {
+            ChatIAScreen(
                 navController = navController
             )
         }
