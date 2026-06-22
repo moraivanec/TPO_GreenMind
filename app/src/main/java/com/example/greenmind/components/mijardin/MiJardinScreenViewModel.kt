@@ -20,28 +20,44 @@ class MiJardinScreenViewModel(
     fun loadSavedPlants() {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(
-                    isLoading = true,
-                    errorMessage = null
-                )
+                it.copy(isLoading = true, errorMessage = null)
             }
 
             try {
-                val plants = plantRepository.getSavedPlants()
+                val localPlants = plantRepository.getSavedPlants()
 
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        savedPlants = plants,
+                        savedPlants = localPlants,
+                        errorMessage = null
+                    )
+                }
+
+                plantRepository.syncGardenFromRemote()
+
+                val syncedPlants = plantRepository.getSavedPlants()
+
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        savedPlants = syncedPlants,
                         errorMessage = null
                     )
                 }
 
             } catch (e: Exception) {
+                val localPlants = plantRepository.getSavedPlants()
+
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "No se pudieron cargar las plantas guardadas"
+                        savedPlants = localPlants,
+                        errorMessage = if (localPlants.isEmpty()) {
+                            "No se pudieron cargar las plantas guardadas."
+                        } else {
+                            null
+                        }
                     )
                 }
             }
@@ -52,12 +68,20 @@ class MiJardinScreenViewModel(
         viewModelScope.launch {
             try {
                 plantRepository.removePlantFromGarden(id)
-                loadSavedPlants()
+
+                val updatedPlants = plantRepository.getSavedPlants()
+
+                _uiState.update {
+                    it.copy(
+                        savedPlants = updatedPlants,
+                        errorMessage = null
+                    )
+                }
 
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
-                        errorMessage = "No se pudo eliminar la planta"
+                        errorMessage = "No se pudo quitar la planta."
                     )
                 }
             }

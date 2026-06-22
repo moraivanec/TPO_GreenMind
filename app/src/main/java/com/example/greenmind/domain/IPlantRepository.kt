@@ -16,4 +16,6 @@ interface IPlantRepository {
     suspend fun isPlantSaved(id: Int): Boolean
 
     suspend fun getSavedPlants(): List<PlantDetail>
+
+    suspend fun syncGardenFromRemote()
 }

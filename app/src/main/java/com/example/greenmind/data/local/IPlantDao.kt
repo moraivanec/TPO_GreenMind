@@ -36,6 +36,9 @@ interface IPlantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSavedPlant(plantDetail: PlantDetailLocal)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSavedPlants(plants: List<PlantDetailLocal>)
+
     @Query("DELETE FROM plant_details WHERE id = :id")
     suspend fun deleteSavedPlantById(id: Int)
 }
