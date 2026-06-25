@@ -2,7 +2,6 @@ package com.example.greenmind.components.plantdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.greenmind.data.PlantRepository
 import com.example.greenmind.domain.IPlantRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,9 +9,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PlantDetailScreenViewModel(
-    private val plantRepository: IPlantRepository = PlantRepository()
+@HiltViewModel
+class PlantDetailScreenViewModel @Inject constructor(
+    private val plantRepository: IPlantRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlantDetailScreenState())

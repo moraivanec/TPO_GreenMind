@@ -14,16 +14,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.commons.PlantUiItemDetail
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun PlantDetailScreen(
     plantId: Int,
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vm: PlantDetailScreenViewModel = viewModel()
+    vm: PlantDetailScreenViewModel = hiltViewModel()
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -69,16 +69,20 @@ fun PlantDetailScreen(
             }
 
             uiState.plant != null -> {
-                PlantUiItemDetail(
-                    plant = uiState.plant!!,
-                    isSaved = uiState.isSaved,
-                    onBackClick = {
-                        navController.popBackStack()
-                    },
-                    onSaveClick = {
-                        vm.togglePlantInGarden()
-                    }
-                )
+                val plant = uiState.plant
+
+                if (plant != null) {
+                    PlantUiItemDetail(
+                        plant = plant,
+                        isSaved = uiState.isSaved,
+                        onBackClick = {
+                            navController.popBackStack()
+                        },
+                        onSaveClick = {
+                            vm.togglePlantInGarden()
+                        }
+                    )
+                }
             }
         }
     }

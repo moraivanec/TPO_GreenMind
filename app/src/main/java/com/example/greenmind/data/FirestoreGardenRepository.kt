@@ -4,11 +4,12 @@ import com.example.greenmind.domain.IGardenRemoteRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class FirestoreGardenRepository : IGardenRemoteRepository {
-
-    private val auth = FirebaseAuth.getInstance()
-    private val firestore = FirebaseFirestore.getInstance()
+class FirestoreGardenRepository @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
+) : IGardenRemoteRepository {
 
     private fun getUserId(): String {
         return auth.currentUser?.uid

@@ -31,17 +31,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.R
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.components.commons.PlantUIList
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun PlantListScreen(
     modifier: Modifier = Modifier,
-    vm: PlantListScreenViewModel = viewModel(),
+    vm: PlantListScreenViewModel = hiltViewModel(),
     navController: NavHostController,
     onLogoutClick: () -> Unit
 ) {

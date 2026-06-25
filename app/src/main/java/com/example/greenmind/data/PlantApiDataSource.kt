@@ -1,12 +1,14 @@
 package com.example.greenmind.data
 
 import android.util.Log
-import com.example.greenmind.data.local.GreenMindDatabaseProvider
+import com.example.greenmind.data.local.IPlantDao
 import com.example.greenmind.data.local.toExternal
 import com.example.greenmind.data.local.toLocal
+import javax.inject.Inject
 
-class PlantApiDataSource(
-    private val plantAPI: IPlantAPI = RetrofitInstance.plantAPI
+class PlantApiDataSource @Inject constructor(
+    private val plantAPI: IPlantAPI,
+    private val plantDao: IPlantDao
 ) : IPlantDataSource {
 
     private val TAG = "PLANT-API"
@@ -17,7 +19,6 @@ class PlantApiDataSource(
 
     override suspend fun getPlantList(query: String): List<Plant> {
         val finalQuery = query.ifBlank { null }
-        val dbLocal = GreenMindDatabaseProvider.dbLocal
 
         return try {
             Log.d(TAG, "PlantApiDataSource.getPlantList Search: $query")
@@ -33,7 +34,7 @@ class PlantApiDataSource(
                 .map { plantDto -> plantDto.toPlant() }
                 .filter { plant -> plant.id != 0 }
 
-            dbLocal.plantDao().insertPlants(plants.toLocal())
+            plantDao.insertPlants(plants.toLocal())
 
             Log.d(TAG, "API: plantas guardadas en Room: ${plants.size}")
 
@@ -42,7 +43,7 @@ class PlantApiDataSource(
         } catch (e: Exception) {
             Log.e(TAG, "Error al obtener listado desde API. Buscando en Room...", e)
 
-            val localPlants = dbLocal.plantDao().getPlants().toExternal()
+            val localPlants = plantDao.getPlants().toExternal()
 
             val filteredPlants = if (query.isBlank()) {
                 localPlants
@@ -65,8 +66,6 @@ class PlantApiDataSource(
     }
 
     override suspend fun getPlantById(id: Int): PlantDetail {
-        val dbLocal = GreenMindDatabaseProvider.dbLocal
-
         return try {
             Log.d(TAG, "PlantApiDataSource.getPlantById ID: $id")
 
@@ -80,9 +79,7 @@ class PlantApiDataSource(
         } catch (e: Exception) {
             Log.e(TAG, "Error al obtener detalle desde API. Buscando en Room...", e)
 
-            val savedPlant = dbLocal
-                .plantDao()
-                .getSavedPlantById(id)
+            val savedPlant = plantDao.getSavedPlantById(id)
 
             if (savedPlant != null) {
                 Log.d(TAG, "LOCAL: detalle recuperado desde Mi Jardín: ${savedPlant.commonName}")

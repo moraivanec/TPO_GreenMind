@@ -4,8 +4,9 @@ import com.example.greenmind.domain.IGeminiRepository
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
+import javax.inject.Inject
 
-class GeminiRepository : IGeminiRepository {
+class GeminiRepository @Inject constructor() : IGeminiRepository {
 
     private val model = Firebase
         .ai(backend = GenerativeBackend.googleAI())

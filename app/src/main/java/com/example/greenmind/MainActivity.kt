@@ -18,22 +18,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.example.greenmind.data.local.GreenMindDatabaseProvider
-
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
     private lateinit var googleSignInClient: GoogleSignInClient
-
     private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
 
             try {
                 val account = task.getResult(ApiException::class.java)
-
                 val idToken = account.idToken
 
                 if (idToken != null) {
@@ -69,17 +66,16 @@ class MainActivity : ComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        GreenMindDatabaseProvider.createDatabase(this)
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
@@ -90,7 +86,8 @@ class MainActivity : ComponentActivity() {
                 NavigationStack(
                     navController = navController,
 
-                    onGoogleLoginClick = { launcher.launch(googleSignInClient.signInIntent)
+                    onGoogleLoginClick = {
+                        launcher.launch(googleSignInClient.signInIntent)
                     },
 
                     onLogoutClick = {

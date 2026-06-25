@@ -1,17 +1,17 @@
 package com.example.greenmind.data
 
-import com.example.greenmind.data.local.GreenMindDatabaseProvider
+import com.example.greenmind.data.local.IPlantDao
 import com.example.greenmind.data.local.toLocal
 import com.example.greenmind.data.local.toPlantDetailExternal
 import com.example.greenmind.domain.IGardenRemoteRepository
 import com.example.greenmind.domain.IPlantRepository
+import javax.inject.Inject
 
-class PlantRepository(
-    private val dataSource: IPlantDataSource = PlantApiDataSource(),
-    private val gardenRemoteRepository: IGardenRemoteRepository = FirestoreGardenRepository()
+class PlantRepository @Inject constructor(
+    private val dataSource: IPlantDataSource,
+    private val gardenRemoteRepository: IGardenRemoteRepository,
+    private val plantDao: IPlantDao
 ) : IPlantRepository {
-
-    private val plantDao = GreenMindDatabaseProvider.dbLocal.plantDao()
 
     override suspend fun fetchPlants(query: String): List<Plant> {
         return dataSource.getPlantList(query)

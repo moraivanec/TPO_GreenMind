@@ -2,16 +2,18 @@ package com.example.greenmind.components.chatia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.greenmind.data.GeminiRepository
 import com.example.greenmind.domain.IGeminiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ChatIAScreenViewModel(
-    private val geminiRepository: IGeminiRepository = GeminiRepository()
+@HiltViewModel
+class ChatIAScreenViewModel @Inject constructor(
+    private val geminiRepository: IGeminiRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChatIAScreenState())
@@ -35,6 +37,10 @@ class ChatIAScreenViewModel(
         val question = rawQuestion.trim()
 
         if (question.isBlank()) {
+            return
+        }
+
+        if (_uiState.value.isLoading) {
             return
         }
 

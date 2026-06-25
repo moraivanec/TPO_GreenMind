@@ -33,19 +33,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.data.PlantDetail
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun MiJardinScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vm: MiJardinScreenViewModel = viewModel()
+    vm: MiJardinScreenViewModel = hiltViewModel()
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 

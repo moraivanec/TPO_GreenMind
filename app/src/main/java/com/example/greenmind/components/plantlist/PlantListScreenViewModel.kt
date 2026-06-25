@@ -2,9 +2,9 @@ package com.example.greenmind.components.plantlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.greenmind.data.PlantRepository
 import com.example.greenmind.domain.IPlantRepository
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,9 +12,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlantListScreenViewModel(
-    private val plantRepository: IPlantRepository = PlantRepository()
+@HiltViewModel
+class PlantListScreenViewModel @Inject constructor(
+    private val plantRepository: IPlantRepository,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlantListScreenState())
@@ -28,7 +31,7 @@ class PlantListScreenViewModel(
     }
 
     private fun loadUserName() {
-        val name = FirebaseAuth.getInstance().currentUser?.displayName ?: "Usuario"
+        val name = firebaseAuth.currentUser?.displayName ?: "Usuario"
 
         _uiState.update {
             it.copy(userName = name)

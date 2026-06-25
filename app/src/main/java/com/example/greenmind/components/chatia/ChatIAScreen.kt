@@ -29,16 +29,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ChatIAScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vm: ChatIAScreenViewModel = viewModel()
+    vm: ChatIAScreenViewModel = hiltViewModel()
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
@@ -57,6 +57,17 @@ fun ChatIAScreen(
         ) {
             uiState.messages.forEach { message ->
                 ChatBubble(message = message)
+
+                Spacer(modifier = Modifier.height(10.dp))
+            }
+
+            if (uiState.isLoading) {
+                ChatBubble(
+                    message = ChatMessage(
+                        text = "Pensando una respuesta...",
+                        isFromUser = false
+                    )
+                )
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -129,7 +140,7 @@ fun ChatIAScreen(
                         .height(120.dp),
                     placeholder = {
                         Text(
-                            text = "Escribe tu pregunta...",
+                            text = "Escribí tu pregunta...",
                             color = Color(0xFF9A9A9A)
                         )
                     },

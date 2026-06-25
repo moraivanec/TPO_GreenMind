@@ -1,16 +1,16 @@
 package com.example.greenmind.components.splash
 
 import androidx.lifecycle.ViewModel
-import com.example.greenmind.data.FirebaseAuthRepository
 import com.example.greenmind.domain.IAuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class SplashScreenViewModel(
-    private val authRepository: IAuthRepository = FirebaseAuthRepository()
+@HiltViewModel
+class SplashScreenViewModel @Inject constructor(
+    private val authRepository: IAuthRepository
 ) : ViewModel() {
 
     fun isUserLogged(): Boolean {
         return authRepository.isUserLogged()
     }
-
 }

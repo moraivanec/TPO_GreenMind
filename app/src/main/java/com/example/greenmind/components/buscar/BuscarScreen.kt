@@ -26,17 +26,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.components.commons.PlantUIList
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun BuscarScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vm: BuscarScreenViewModel = viewModel()
+    vm: BuscarScreenViewModel = hiltViewModel()
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 

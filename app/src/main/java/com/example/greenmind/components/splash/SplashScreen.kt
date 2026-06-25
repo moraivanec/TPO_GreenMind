@@ -18,17 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.R
 import com.example.greenmind.components.Screen
 import kotlinx.coroutines.delay
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SplashScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    vm: SplashScreenViewModel = viewModel()
+    vm: SplashScreenViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
         delay(2000)
