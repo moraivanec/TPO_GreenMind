@@ -2,6 +2,7 @@ package com.example.greenmind.data
 
 import com.google.gson.annotations.SerializedName
 
+// Modelo principal de una planta usado por la app para mostrar listados
 data class Plant(
     val id: Int,
     val commonName: String,
@@ -10,6 +11,7 @@ data class Plant(
     val imageUrl: String
 )
 
+// Modelo principal usado por la app para mostrar el detalle completo de una planta
 data class PlantDetail(
     val id: Int,
     val commonName: String,
@@ -24,11 +26,13 @@ data class PlantDetail(
     val imageUrl: String
 )
 
+// Respuesta que devuelve la API cuando se consulta el listado de plantas
 data class PlantListResponse(
     @SerializedName("data")
     val data: List<PlantDto> = emptyList()
 )
 
+// Modelo DTO que representa una planta tal como viene desde la API
 data class PlantDto(
     @SerializedName("id")
     val id: Int? = null,
@@ -46,6 +50,7 @@ data class PlantDto(
     val defaultImage: PlantImageDto? = null
 )
 
+// Modelo DTO que representa las imágenes recibidas desde la API
 data class PlantImageDto(
     @SerializedName("thumbnail")
     val thumbnail: String? = null,
@@ -54,6 +59,7 @@ data class PlantImageDto(
     val regularUrl: String? = null
 )
 
+// Modelo DTO que representa el detalle de una planta tal como viene desde la API
 data class PlantDetailDto(
     @SerializedName("id")
     val id: Int? = null,
@@ -89,16 +95,19 @@ data class PlantDetailDto(
     val defaultImage: PlantImageDto? = null
 )
 
+
+// Convierte una planta recibida desde la API al modelo usado por la app.
 fun PlantDto.toPlant(): Plant {
     return Plant(
         id = id ?: 0,
         commonName = commonName ?: "Sin nombre",
         scientificName = scientificName?.joinToString(", ") ?: "Sin nombre científico",
-        careLevel = careLevel ?: "No informado",
+        careLevel = careLevel?.takeIf { it.isNotBlank() } ?: "Ver detalle",
         imageUrl = defaultImage?.thumbnail ?: ""
     )
 }
 
+// Convierte el detalle recibido desde la API al modelo usado por la app
 fun PlantDetailDto.toPlantDetail(): PlantDetail {
     return PlantDetail(
         id = id ?: 0,

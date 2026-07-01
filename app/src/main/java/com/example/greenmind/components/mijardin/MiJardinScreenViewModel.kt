@@ -26,6 +26,7 @@ class MiJardinScreenViewModel @Inject constructor(
             }
 
             try {
+                // Primero se cargan las plantas guardadas localmente desde Room
                 val localPlants = plantRepository.getSavedPlants()
 
                 _uiState.update {
@@ -36,8 +37,10 @@ class MiJardinScreenViewModel @Inject constructor(
                     )
                 }
 
+                // Después sincroniza el jardín con Firestore
                 plantRepository.syncGardenFromRemote()
 
+                // Sincroniza y se vuelve a leer Room para mostrar datos actualizados
                 val syncedPlants = plantRepository.getSavedPlants()
 
                 _uiState.update {
@@ -49,6 +52,7 @@ class MiJardinScreenViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
+                // Si falla la sincronización remota, se intenta mantener visible la información local
                 val localPlants = plantRepository.getSavedPlants()
 
                 _uiState.update {
@@ -69,8 +73,10 @@ class MiJardinScreenViewModel @Inject constructor(
     fun removePlant(id: Int) {
         viewModelScope.launch {
             try {
+                // El repo se ocupa de eliminar la planta localmente y en remoto
                 plantRepository.removePlantFromGarden(id)
 
+                // Consulta de nuevo la lista para actualizar la pantalla
                 val updatedPlants = plantRepository.getSavedPlants()
 
                 _uiState.update {

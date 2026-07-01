@@ -15,9 +15,13 @@ interface IPlantDao {
     @Query("SELECT * FROM plants WHERE id = :id LIMIT 1")
     suspend fun getPlantById(id: Int): PlantLocal?
 
+    // Inserta una planta en la tabla plants
+    // Si ya existe, la reemplaza
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlant(plant: PlantLocal)
 
+    // Inserta varias plantas en la tabla plants
+    // Si alguna ya existe, la reemplaza
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlants(plants: List<PlantLocal>)
 
@@ -26,7 +30,7 @@ interface IPlantDao {
 
 
     // Mi Jardín
-
+    // Obtiene las plantas guardadas en Mi Jardin, ordenadas por fecha de guardado
     @Query("SELECT * FROM plant_details ORDER BY dateAdded DESC")
     suspend fun getSavedPlants(): List<PlantDetailLocal>
 

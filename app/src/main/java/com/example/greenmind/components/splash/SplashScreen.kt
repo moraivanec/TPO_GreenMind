@@ -15,14 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.R
 import com.example.greenmind.components.Screen
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindPrimary
 import kotlinx.coroutines.delay
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SplashScreen(
@@ -30,9 +31,11 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     vm: SplashScreenViewModel = hiltViewModel()
 ) {
+    // Ejecuta la lógica inicial una sola vez cuando se muestra en pantalla
     LaunchedEffect(Unit) {
         delay(2000)
 
+        // Si ya existe una sesión activa, navega directamente al Inicio de la app
         if (vm.isUserLogged()) {
             navController.navigate(Screen.PlantList.route) {
                 popUpTo(Screen.Splash.route) {
@@ -40,6 +43,7 @@ fun SplashScreen(
                 }
             }
         } else {
+            // Si no hay sesión iniciada, navega al Login
             navController.navigate(Screen.Login.route) {
                 popUpTo(Screen.Splash.route) {
                     inclusive = true
@@ -51,7 +55,7 @@ fun SplashScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1)),
+            .background(GreenMindBackground),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -69,7 +73,7 @@ fun SplashScreen(
             Text(
                 text = "GreenMind",
                 style = MaterialTheme.typography.headlineMedium,
-                color = Color(0xFF557B45)
+                color = GreenMindPrimary
             )
         }
     }

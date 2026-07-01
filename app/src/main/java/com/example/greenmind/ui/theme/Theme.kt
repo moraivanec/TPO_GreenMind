@@ -1,6 +1,5 @@
 package com.example.greenmind.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,38 +11,46 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = GreenMindPrimary,
+    secondary = GreenMindSoft,
+    tertiary = GreenMindLight,
+    background = GreenMindBackground,
+    surface = GreenMindWhite,
+    onPrimary = GreenMindWhite,
+    onSecondary = GreenMindPrimary,
+    onTertiary = GreenMindPrimary,
+    onBackground = GreenMindTextDark,
+    onSurface = GreenMindTextDark
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = GreenMindPrimary,
+    secondary = GreenMindSoft,
+    tertiary = GreenMindLight,
+    background = GreenMindBackground,
+    surface = GreenMindWhite,
+    onPrimary = GreenMindWhite,
+    onSecondary = GreenMindPrimary,
+    onTertiary = GreenMindPrimary,
+    onBackground = GreenMindTextDark,
+    onSurface = GreenMindTextDark
 )
 
 @Composable
 fun GreenMindTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+
+            if (darkTheme) {
+                dynamicDarkColorScheme(context)
+            } else {
+                dynamicLightColorScheme(context)
+            }
         }
 
         darkTheme -> DarkColorScheme

@@ -28,10 +28,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -39,7 +39,15 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.data.PlantDetail
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindError
+import com.example.greenmind.ui.theme.GreenMindLight
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSoft
+import com.example.greenmind.ui.theme.GreenMindTextDark
+import com.example.greenmind.ui.theme.GreenMindTextGray
+import com.example.greenmind.ui.theme.GreenMindTextSecondary
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun MiJardinScreen(
@@ -49,6 +57,7 @@ fun MiJardinScreen(
 ) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
+    // Carga las plantas guardadas una sola vez cuando se abre la pantalla
     LaunchedEffect(Unit) {
         vm.loadSavedPlants()
     }
@@ -56,14 +65,15 @@ fun MiJardinScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
     ) {
+        // Encabezado de Mi Jardin con la cantidad de plantas guardadas
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(135.dp)
                 .background(
-                    color = Color(0xFF557B45),
+                    color = GreenMindPrimary,
                     shape = RoundedCornerShape(
                         bottomStart = 30.dp,
                         bottomEnd = 30.dp
@@ -77,13 +87,13 @@ fun MiJardinScreen(
                     text = "Mi Jardín",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = GreenMindWhite
                 )
 
                 Text(
                     text = "${uiState.savedPlants.size} plantas guardadas",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFFEAF3E4)
+                    color = GreenMindLight
                 )
             }
         }
@@ -91,6 +101,7 @@ fun MiJardinScreen(
         Box(
             modifier = Modifier.weight(1f)
         ) {
+            // Muestra distintos contenidos según el estado actual de la pantalla
             when {
                 uiState.isLoading -> {
                     Box(
@@ -98,7 +109,7 @@ fun MiJardinScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -110,7 +121,7 @@ fun MiJardinScreen(
                     ) {
                         Text(
                             text = uiState.errorMessage ?: "",
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -148,6 +159,7 @@ fun MiJardinScreen(
             }
         }
 
+        // Barra inferior para navegar entre las secciones principales
         GreenMindBottomBar(
             selectedRoute = Screen.MiJardin.route,
             onHomeClick = {
@@ -191,7 +203,7 @@ fun EmptyMiJardinState(
                 text = "Tu jardín está vacío",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF557B45)
+                color = GreenMindPrimary
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -199,7 +211,7 @@ fun EmptyMiJardinState(
             Text(
                 text = "Guardá tus plantas favoritas para verlas acá.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF6F6F6F)
+                color = GreenMindTextSecondary
             )
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -207,13 +219,13 @@ fun EmptyMiJardinState(
             Button(
                 onClick = onExploreClick,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF557B45)
+                    containerColor = GreenMindPrimary
                 ),
                 shape = RoundedCornerShape(14.dp)
             ) {
                 Text(
                     text = "Explorar plantas",
-                    color = Color.White
+                    color = GreenMindWhite
                 )
             }
         }
@@ -236,7 +248,7 @@ fun SavedPlantItem(
             },
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = GreenMindWhite
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
@@ -246,21 +258,23 @@ fun SavedPlantItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Si la planta no tiene imagen, se muestra un placeholder
             if (plant.imageUrl.isBlank()) {
                 Box(
                     modifier = Modifier
                         .size(82.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(Color(0xFFDDE8D8)),
+                        .background(GreenMindSoft),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Sin imagen",
-                        color = Color(0xFF557B45),
+                        color = GreenMindPrimary,
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
             } else {
+                // Glide carga la imagen de la planta desde su URL
                 GlideImage(
                     model = plant.imageUrl,
                     contentDescription = plant.commonName,
@@ -280,7 +294,7 @@ fun SavedPlantItem(
                     text = plant.commonName,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF222222)
+                    color = GreenMindTextDark
                 )
 
                 Spacer(modifier = Modifier.height(2.dp))
@@ -288,7 +302,7 @@ fun SavedPlantItem(
                 Text(
                     text = plant.scientificName,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF8A8A8A)
+                    color = GreenMindTextGray
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -296,7 +310,7 @@ fun SavedPlantItem(
                 Text(
                     text = "Nivel: ${plant.careLevel}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF557B45)
+                    color = GreenMindPrimary
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -305,7 +319,7 @@ fun SavedPlantItem(
                     text = "Eliminar",
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFFD71920),
+                    color = GreenMindError,
                     modifier = Modifier.clickable {
                         onRemoveClick()
                     }

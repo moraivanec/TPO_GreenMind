@@ -12,6 +12,8 @@ fun PlantUIList(
     modifier: Modifier = Modifier,
     onPlantClick: (Int) -> Unit
 ) {
+    // LazyColumn muestra una lista eficiente
+    // Solo compone los ítems visibles en pantalla
     LazyColumn(
         modifier = modifier
     ) {

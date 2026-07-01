@@ -15,6 +15,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+// Prueba que al cargar Mi Jardin se muestren las plantas guardadas
+// Y que al quitar una planta, se borre del listado
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class MiJardinScreenViewModelTest {
 

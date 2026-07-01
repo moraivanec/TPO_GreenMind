@@ -20,13 +20,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.greenmind.data.Plant
+import com.example.greenmind.ui.theme.GreenMindBadgeDefault
+import com.example.greenmind.ui.theme.GreenMindHardBadge
+import com.example.greenmind.ui.theme.GreenMindHardText
+import com.example.greenmind.ui.theme.GreenMindMediumBadge
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSoft
+import com.example.greenmind.ui.theme.GreenMindSuccessSoft
+import com.example.greenmind.ui.theme.GreenMindTextBlack
+import com.example.greenmind.ui.theme.GreenMindTextGray
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -35,6 +44,7 @@ fun PlantUIItem(
     modifier: Modifier = Modifier,
     onPlantClick: (Int) -> Unit
 ) {
+    // Tarjeta individual que representa una planta dentro de una lista
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -42,7 +52,7 @@ fun PlantUIItem(
             .clickable { onPlantClick(plant.id) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = GreenMindWhite
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
@@ -52,21 +62,23 @@ fun PlantUIItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Si la planta no tiene imagen, se muestra un placeholder
             if (plant.imageUrl.isBlank()) {
                 Box(
                     modifier = Modifier
                         .size(width = 88.dp, height = 76.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(Color(0xFFDDE8D8)),
+                        .background(GreenMindSoft),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Sin imagen",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFF557B45)
+                        color = GreenMindPrimary
                     )
                 }
             } else {
+                // Glide carga la imagen de la planta desde una URL
                 GlideImage(
                     model = plant.imageUrl,
                     contentDescription = plant.commonName,
@@ -74,7 +86,7 @@ fun PlantUIItem(
                     modifier = Modifier
                         .size(width = 88.dp, height = 76.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(Color(0xFFDDE8D8))
+                        .background(GreenMindSoft)
                 )
             }
 
@@ -86,7 +98,7 @@ fun PlantUIItem(
                 Text(
                     text = plant.commonName,
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color(0xFF1F1F1F),
+                    color = GreenMindTextBlack,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -96,13 +108,14 @@ fun PlantUIItem(
                 Text(
                     text = plant.scientificName,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF8A8A8A),
+                    color = GreenMindTextGray,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // Badge visual que muestra el nivel de cuidado de la planta
                 DifficultyBadge(plant.careLevel)
             }
         }
@@ -113,16 +126,17 @@ fun PlantUIItem(
 fun DifficultyBadge(
     careLevel: String
 ) {
+    // Cambia el color del badge según el nivel de cuidado recibido
     val badgeColor = when (careLevel.lowercase()) {
-        "easy", "fácil", "facil" -> Color(0xFFD9F2DD)
-        "medium", "moderate", "moderado" -> Color(0xFFFFF3B8)
-        "hard", "difficult", "difícil", "dificil" -> Color(0xFFFFD6D6)
-        else -> Color(0xFFE5EEDC)
+        "easy", "fácil", "facil" -> GreenMindSuccessSoft
+        "medium", "moderate", "moderado" -> GreenMindMediumBadge
+        "hard", "difficult", "difícil", "dificil" -> GreenMindHardBadge
+        else -> GreenMindBadgeDefault
     }
 
     val textColor = when (careLevel.lowercase()) {
-        "hard", "difficult", "difícil", "dificil" -> Color(0xFFB54848)
-        else -> Color(0xFF557B45)
+        "hard", "difficult", "difícil", "dificil" -> GreenMindHardText
+        else -> GreenMindPrimary
     }
 
     Box(

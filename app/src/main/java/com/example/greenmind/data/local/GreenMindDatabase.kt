@@ -14,12 +14,14 @@ import androidx.room.RoomDatabase
 )
 abstract class GreenMindDatabase : RoomDatabase() {
 
+    // Expone el DAO que permite acceder a las tablas de las plantas
     abstract fun plantDao(): IPlantDao
 
     companion object {
         @Volatile
         private var _instance: GreenMindDatabase? = null
 
+        // Devuelve una única instancia de la base de datos para toda la aplicación
         fun getInstance(context: Context): GreenMindDatabase =
             _instance ?: synchronized(this) {
                 _instance ?: buildDatabase(context).also {
@@ -27,6 +29,7 @@ abstract class GreenMindDatabase : RoomDatabase() {
                 }
             }
 
+        // Construye la base de datos local Room
         private fun buildDatabase(context: Context): GreenMindDatabase =
             Room.databaseBuilder(
                 context,

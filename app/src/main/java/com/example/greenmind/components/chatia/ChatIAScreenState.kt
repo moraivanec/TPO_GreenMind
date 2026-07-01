@@ -2,7 +2,7 @@ package com.example.greenmind.components.chatia
 
 data class ChatMessage(
     val text: String,
-    val isFromUser: Boolean
+    val isFromUser: Boolean // Permite diferenciar si el mensaje lo envió el usuario o la IA
 )
 
 data class ChatIAScreenState(

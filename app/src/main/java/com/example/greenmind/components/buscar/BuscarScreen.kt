@@ -22,15 +22,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.components.commons.PlantUIList
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindInput
+import com.example.greenmind.ui.theme.GreenMindPlaceholder
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSearchSoft
+import com.example.greenmind.ui.theme.GreenMindTransparent
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun BuscarScreen(
@@ -38,13 +44,15 @@ fun BuscarScreen(
     modifier: Modifier = Modifier,
     vm: BuscarScreenViewModel = hiltViewModel()
 ) {
+    // Observa el estado del ViewModel respetando el ciclo de vida de la pantalla
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
     ) {
+        // Encabezado de la pantalla con título y campo de búsqueda
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,14 +62,14 @@ fun BuscarScreen(
                         bottomEnd = 34.dp
                     )
                 )
-                .background(Color(0xFF557B45))
+                .background(GreenMindPrimary)
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
             Text(
                 text = "‹  Buscar plantas",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = GreenMindWhite,
                 modifier = Modifier.clickable {
                     navController.popBackStack()
                 }
@@ -72,25 +80,26 @@ fun BuscarScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = {
+                    // Cada cambio en el texto se manda al ViewModel para hacer la búsqueda
                     vm.searchChange(it)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "Busca por nombre...",
-                        color = Color(0xFFEEF4EA)
+                        color = GreenMindPlaceholder
                     )
                 },
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF9DB892),
-                    unfocusedContainerColor = Color(0xFF9DB892),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    cursorColor = Color.White
+                    focusedContainerColor = GreenMindInput,
+                    unfocusedContainerColor = GreenMindInput,
+                    focusedBorderColor = GreenMindTransparent,
+                    unfocusedBorderColor = GreenMindTransparent,
+                    focusedTextColor = GreenMindWhite,
+                    unfocusedTextColor = GreenMindWhite,
+                    cursorColor = GreenMindWhite
                 )
             )
         }
@@ -98,6 +107,7 @@ fun BuscarScreen(
         Box(
             modifier = Modifier.weight(1f)
         ) {
+            // La pantalla cambia su contenido según el estado actual de la búsqueda
             when {
                 uiState.searchQuery.isBlank() -> {
                     EmptySearchState()
@@ -109,7 +119,7 @@ fun BuscarScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -121,7 +131,7 @@ fun BuscarScreen(
                     ) {
                         Text(
                             text = uiState.errorMessage ?: "",
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -133,7 +143,7 @@ fun BuscarScreen(
                     ) {
                         Text(
                             text = "No se encontraron plantas",
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -152,6 +162,7 @@ fun BuscarScreen(
             }
         }
 
+        // Barra inferior con la que se navega en las secciones principales
         GreenMindBottomBar(
             selectedRoute = Screen.Buscar.route,
             onHomeClick = {
@@ -191,13 +202,13 @@ fun EmptySearchState() {
                 modifier = Modifier
                     .size(74.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFD9EBD3)),
+                    .background(GreenMindSearchSoft),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "⌕",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = Color(0xFF557B45)
+                    color = GreenMindPrimary
                 )
             }
 
@@ -206,13 +217,13 @@ fun EmptySearchState() {
             Text(
                 text = "Escriba el nombre de una planta",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF557B45)
+                color = GreenMindPrimary
             )
 
             Text(
                 text = "para comenzar",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF557B45)
+                color = GreenMindPrimary
             )
         }
     }

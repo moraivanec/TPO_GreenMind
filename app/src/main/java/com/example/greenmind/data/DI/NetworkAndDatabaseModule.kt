@@ -23,7 +23,7 @@ object NetworkAndDatabaseModule {
     @Singleton
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://perenual.com/api/")
+            .baseUrl("https://perenual.com/api/v2/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -40,6 +40,7 @@ object NetworkAndDatabaseModule {
         GreenMindDatabase.getInstance(context)
 
     @Provides
+    @Singleton
     fun providePlantDao(
         greenMindDatabase: GreenMindDatabase
     ): IPlantDao =

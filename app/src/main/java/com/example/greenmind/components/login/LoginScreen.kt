@@ -19,14 +19,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.greenmind.R
 import com.example.greenmind.components.Screen
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindTextDark
+import com.example.greenmind.ui.theme.GreenMindTextDisabled
+import com.example.greenmind.ui.theme.GreenMindTextLightGray
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun LoginScreen(
@@ -35,6 +40,7 @@ fun LoginScreen(
     vm: LoginScreenViewModel = hiltViewModel(),
     onGoogleLoginClick: () -> Unit
 ) {
+    // Escucha eventos enviados por el ViewModel, como navegar después de iniciar sesión
     LaunchedEffect(Unit) {
         vm.uiEvent.collect {
             navController.navigate(Screen.PlantList.route) {
@@ -48,7 +54,7 @@ fun LoginScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
             .padding(horizontal = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,7 +72,7 @@ fun LoginScreen(
             text = "GreenMind",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF557B45)
+            color = GreenMindPrimary
         )
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -74,7 +80,7 @@ fun LoginScreen(
         Text(
             text = "Cuida tus plantas como un experto",
             style = MaterialTheme.typography.bodyMedium,
-            color = Color(0xFF9E9E9E)
+            color = GreenMindTextLightGray
         )
 
         Spacer(modifier = Modifier.height(48.dp))
@@ -100,6 +106,7 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
+        // El inicio de sesión con Google se maneja desde MainActivity mediante este callback
         Button(
             onClick = onGoogleLoginClick,
             modifier = Modifier
@@ -107,12 +114,12 @@ fun LoginScreen(
                 .height(56.dp),
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF557B45)
+                containerColor = GreenMindPrimary
             )
         ) {
             Text(
                 text = "Iniciar sesión con Google",
-                color = Color.White,
+                color = GreenMindWhite,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -122,7 +129,7 @@ fun LoginScreen(
         Text(
             text = "Al continuar, aceptas nuestros términos y condiciones",
             style = MaterialTheme.typography.bodySmall,
-            color = Color(0xFFB0B0B0)
+            color = GreenMindTextDisabled
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -151,7 +158,7 @@ fun LoginFeatureItem(
                 text = title,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF222222)
+                color = GreenMindTextDark
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -159,7 +166,7 @@ fun LoginFeatureItem(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF9E9E9E)
+                color = GreenMindTextLightGray
             )
         }
     }

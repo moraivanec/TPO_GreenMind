@@ -25,14 +25,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindInputBorder
+import com.example.greenmind.ui.theme.GreenMindInputGray
+import com.example.greenmind.ui.theme.GreenMindOnline
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSearchSoft
+import com.example.greenmind.ui.theme.GreenMindSoft
+import com.example.greenmind.ui.theme.GreenMindTextDark
+import com.example.greenmind.ui.theme.GreenMindTextGray
+import com.example.greenmind.ui.theme.GreenMindTextGreenDark
+import com.example.greenmind.ui.theme.GreenMindTextMuted
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun ChatIAScreen(
@@ -40,12 +51,13 @@ fun ChatIAScreen(
     modifier: Modifier = Modifier,
     vm: ChatIAScreenViewModel = hiltViewModel()
 ) {
+    // Observa el estado del ViewModel respetando el ciclo de vida de la pantalla
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
     ) {
         ChatIAHeader()
 
@@ -55,12 +67,14 @@ fun ChatIAScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
+            // Muestra todos los mensajes del chat, tanto del usuario como del asistente
             uiState.messages.forEach { message ->
                 ChatBubble(message = message)
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
+            // Mientras Gemini genera una respuesta, se muestra un mensaje temporal
             if (uiState.isLoading) {
                 ChatBubble(
                     message = ChatMessage(
@@ -77,12 +91,13 @@ fun ChatIAScreen(
             Text(
                 text = "Preguntas sugeridas:",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF9A9A9A),
+                color = GreenMindTextMuted,
                 fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Preguntas pre definidas para que el usuario pueda consultar sin escribir
             Row {
                 SuggestedQuestionButton(
                     text = uiState.suggestedQuestions[0],
@@ -141,28 +156,29 @@ fun ChatIAScreen(
                     placeholder = {
                         Text(
                             text = "Escribí tu pregunta...",
-                            color = Color(0xFF9A9A9A)
+                            color = GreenMindTextMuted
                         )
                     },
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color(0xFFE3E6E0),
-                        unfocusedContainerColor = Color(0xFFE3E6E0),
-                        focusedBorderColor = Color(0xFFD0D5CC),
-                        unfocusedBorderColor = Color(0xFFD0D5CC),
-                        focusedTextColor = Color(0xFF222222),
-                        unfocusedTextColor = Color(0xFF222222),
-                        cursorColor = Color(0xFF557B45)
+                        focusedContainerColor = GreenMindInputGray,
+                        unfocusedContainerColor = GreenMindInputGray,
+                        focusedBorderColor = GreenMindInputBorder,
+                        unfocusedBorderColor = GreenMindInputBorder,
+                        focusedTextColor = GreenMindTextDark,
+                        unfocusedTextColor = GreenMindTextDark,
+                        cursorColor = GreenMindPrimary
                     )
                 )
 
                 Spacer(modifier = Modifier.width(10.dp))
 
+                // Botón de enviar
                 Box(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFE3E6E0))
+                        .background(GreenMindInputGray)
                         .clickable {
                             vm.sendMessage()
                         },
@@ -170,13 +186,14 @@ fun ChatIAScreen(
                 ) {
                     Text(
                         text = "➤",
-                        color = Color(0xFF8A8A8A),
+                        color = GreenMindTextGray,
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
             }
         }
 
+        // Barra inferior para navegar entre las secciones principales
         GreenMindBottomBar(
             selectedRoute = Screen.ChatIA.route,
             onHomeClick = {
@@ -210,7 +227,7 @@ fun ChatIAHeader() {
             .fillMaxWidth()
             .height(140.dp)
             .background(
-                color = Color(0xFF557B45),
+                color = GreenMindPrimary,
                 shape = RoundedCornerShape(
                     bottomStart = 34.dp,
                     bottomEnd = 34.dp
@@ -226,13 +243,13 @@ fun ChatIAHeader() {
                 modifier = Modifier
                     .size(52.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFDDE8D8)),
+                    .background(GreenMindSoft),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "🗨",
                     style = MaterialTheme.typography.headlineSmall,
-                    color = Color(0xFF557B45)
+                    color = GreenMindPrimary
                 )
             }
 
@@ -243,13 +260,13 @@ fun ChatIAHeader() {
                     text = "Chat de Jardinería",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = GreenMindWhite
                 )
 
                 Text(
                     text = "● Asistente en línea",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color(0xFF9EE493)
+                    color = GreenMindOnline
                 )
             }
         }
@@ -260,7 +277,7 @@ fun ChatIAHeader() {
 fun ChatBubble(
     message: ChatMessage
 ) {
-    val backgroundColor = if (message.isFromUser) Color(0xFFD9EBD3) else Color.White
+    val backgroundColor = if (message.isFromUser) GreenMindSearchSoft else GreenMindWhite
     val alignment = if (message.isFromUser) Alignment.CenterEnd else Alignment.CenterStart
 
     Box(
@@ -278,7 +295,7 @@ fun ChatBubble(
                 Text(
                     text = "✧ Asistente IA",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF9A9A9A),
+                    color = GreenMindTextMuted,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -288,7 +305,7 @@ fun ChatBubble(
             Text(
                 text = message.text,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF222222)
+                color = GreenMindTextDark
             )
         }
     }
@@ -304,7 +321,7 @@ fun SuggestedQuestionButton(
         modifier = modifier
             .height(58.dp)
             .clip(RoundedCornerShape(18.dp))
-            .background(Color(0xFFDDE8D8))
+            .background(GreenMindSoft)
             .clickable {
                 onClick()
             }
@@ -314,7 +331,7 @@ fun SuggestedQuestionButton(
         Text(
             text = text,
             style = MaterialTheme.typography.bodySmall,
-            color = Color(0xFF3F6138),
+            color = GreenMindTextGreenDark,
             fontWeight = FontWeight.Medium
         )
     }

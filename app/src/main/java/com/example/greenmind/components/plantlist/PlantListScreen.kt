@@ -26,17 +26,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.greenmind.R
 import com.example.greenmind.components.Screen
 import com.example.greenmind.components.commons.GreenMindBottomBar
 import com.example.greenmind.components.commons.PlantUIList
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindHeaderText
+import com.example.greenmind.ui.theme.GreenMindInput
+import com.example.greenmind.ui.theme.GreenMindLight
+import com.example.greenmind.ui.theme.GreenMindPlaceholder
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSoft
+import com.example.greenmind.ui.theme.GreenMindTextDark
+import com.example.greenmind.ui.theme.GreenMindTransparent
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun PlantListScreen(
@@ -50,8 +59,9 @@ fun PlantListScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
     ) {
+        // Encabezado principal, con logo, saludo, botón de salir y buscador
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -61,7 +71,7 @@ fun PlantListScreen(
                         bottomEnd = 34.dp
                     )
                 )
-                .background(Color(0xFF557B45))
+                .background(GreenMindPrimary)
                 .padding(horizontal = 24.dp, vertical = 28.dp)
         ) {
             Row(
@@ -71,7 +81,7 @@ fun PlantListScreen(
                     modifier = Modifier
                         .size(54.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFDDE8D8)),
+                        .background(GreenMindSoft),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -90,22 +100,23 @@ fun PlantListScreen(
                         text = "GreenMind",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = GreenMindWhite
                     )
 
                     Text(
                         text = "¡Hola, ${uiState.userName}! Cuida tus plantas",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color(0xFFE8F1E4)
+                        color = GreenMindHeaderText
                     )
                 }
 
+                // El cierre de sesión se maneja desde MainActivity mediante este callback
                 Button(
                     onClick = onLogoutClick,
                     shape = RoundedCornerShape(20.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFEAF3E4),
-                        contentColor = Color(0xFF557B45)
+                        containerColor = GreenMindLight,
+                        contentColor = GreenMindPrimary
                     )
                 ) {
                     Text("Salir")
@@ -117,25 +128,26 @@ fun PlantListScreen(
             OutlinedTextField(
                 value = uiState.searchQuery,
                 onValueChange = {
+                    // Cada cambio del buscador se manda al ViewModel
                     vm.searchChange(it)
                 },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = "Busca tu planta favorita...",
-                        color = Color(0xFFEEF4EA)
+                        color = GreenMindPlaceholder
                     )
                 },
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color(0xFF9DB892),
-                    unfocusedContainerColor = Color(0xFF9DB892),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    cursorColor = Color.White
+                    focusedContainerColor = GreenMindInput,
+                    unfocusedContainerColor = GreenMindInput,
+                    focusedBorderColor = GreenMindTransparent,
+                    unfocusedBorderColor = GreenMindTransparent,
+                    focusedTextColor = GreenMindWhite,
+                    unfocusedTextColor = GreenMindWhite,
+                    cursorColor = GreenMindWhite
                 )
             )
         }
@@ -151,7 +163,7 @@ fun PlantListScreen(
                 text = "Plantas populares",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF222222)
+                color = GreenMindTextDark
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -163,7 +175,7 @@ fun PlantListScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator(
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
                 }
@@ -171,7 +183,7 @@ fun PlantListScreen(
                 uiState.errorMessage != null -> {
                     Text(
                         text = uiState.errorMessage ?: "",
-                        color = Color(0xFF557B45)
+                        color = GreenMindPrimary
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -179,7 +191,7 @@ fun PlantListScreen(
                     Button(
                         onClick = { vm.fetchPlants() },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF557B45)
+                            containerColor = GreenMindPrimary
                         )
                     ) {
                         Text("Reintentar")
@@ -200,6 +212,7 @@ fun PlantListScreen(
             }
         }
 
+        // Barra inferior para navegar entre secciones
         GreenMindBottomBar(
             selectedRoute = Screen.PlantList.route,
             onHomeClick = {

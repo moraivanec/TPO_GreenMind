@@ -19,11 +19,16 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
+    @Inject
+    lateinit var firebaseAuth: FirebaseAuth
     private lateinit var navController: NavHostController
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    // Launcher encargado de abrir el flujo de inicio de sesión con Google
+    // Y recibir el resultado cuando el usuario termina el proceso
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
@@ -34,10 +39,11 @@ class MainActivity : ComponentActivity() {
                 val idToken = account.idToken
 
                 if (idToken != null) {
+                    // Convierte el token de Google en una credencial válida para Firebase
                     val credential = GoogleAuthProvider.getCredential(idToken, null)
 
-                    FirebaseAuth
-                        .getInstance()
+                    // Inicia sesión en Firebase usando la credencial de Google
+                    firebaseAuth
                         .signInWithCredential(credential)
                         .addOnCompleteListener { authResult ->
 
@@ -72,6 +78,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Configura Google Sign-in solicitando el ID tokem necesario para Firebase Auth
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()

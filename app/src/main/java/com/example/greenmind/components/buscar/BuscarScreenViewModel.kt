@@ -21,6 +21,7 @@ class BuscarScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BuscarScreenState())
     val uiState: StateFlow<BuscarScreenState> = _uiState.asStateFlow()
 
+    // Guarda la búsqeuda actual para poder cancelarla si el usuario sigue escribiendo
     private var searchJob: Job? = null
 
     fun searchChange(value: String) {
@@ -28,6 +29,7 @@ class BuscarScreenViewModel @Inject constructor(
             it.copy(searchQuery = value)
         }
 
+        // Si el campo queda vacío, se cancela la busqueda y se limpia la lista
         if (value.isBlank()) {
             searchJob?.cancel()
             _uiState.update {
@@ -44,6 +46,7 @@ class BuscarScreenViewModel @Inject constructor(
     }
 
     private fun searchPlants() {
+        // Cancela la búsqueda anterior para evitar consultas innecesarias
         searchJob?.cancel()
 
         searchJob = viewModelScope.launch {

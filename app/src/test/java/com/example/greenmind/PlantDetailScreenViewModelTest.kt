@@ -18,6 +18,9 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+// Prueba cargar el detalle de una planta, guardar una planta en Mi Jardin,
+// quitar una planta guardada y limpiar el mensaje de guardado o eliminación
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class PlantDetailScreenViewModelTest {
 

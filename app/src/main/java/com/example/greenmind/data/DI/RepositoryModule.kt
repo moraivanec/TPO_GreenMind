@@ -21,26 +21,31 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
 
     @Binds
+    @Singleton
     abstract fun bindPlantRepository(
         plantRepository: PlantRepository
     ): IPlantRepository
 
     @Binds
+    @Singleton
     abstract fun bindPlantDataSource(
         plantApiDataSource: PlantApiDataSource
     ): IPlantDataSource
 
     @Binds
+    @Singleton
     abstract fun bindGardenRemoteRepository(
         firestoreGardenRepository: FirestoreGardenRepository
     ): IGardenRemoteRepository
 
     @Binds
+    @Singleton
     abstract fun bindGeminiRepository(
         geminiRepository: GeminiRepository
     ): IGeminiRepository
 
     @Binds
+    @Singleton
     abstract fun bindAuthRepository(
         firebaseAuthRepository: FirebaseAuthRepository
     ): IAuthRepository

@@ -20,10 +20,12 @@ class PlantDetailScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PlantDetailScreenState())
     val uiState: StateFlow<PlantDetailScreenState> = _uiState.asStateFlow()
 
+    // Guarda el ID actual para evitar cargar varias veces la misma planta
     private var currentPlantId: Int = 0
     private var fetchJob: Job? = null
 
     fun setPlantId(id: Int) {
+        // Si el detalle ya corresponde a esa planta, no se vuelve a consulltar
         if (currentPlantId == id) {
             return
         }
@@ -33,6 +35,7 @@ class PlantDetailScreenViewModel @Inject constructor(
     }
 
     private fun fetchPlantDetail(id: Int) {
+        // Cancela una carga anterior si todvía estaba en curso
         fetchJob?.cancel()
 
         fetchJob = viewModelScope.launch {
@@ -45,7 +48,9 @@ class PlantDetailScreenViewModel @Inject constructor(
             }
 
             try {
+                // Obtiene el detalle de la planta desde el repo
                 val plant = plantRepository.fetchPlantDetail(id)
+                // Se fija si esa planta ya esta guardada en Mi Jardin
                 val isSaved = plantRepository.isPlantSaved(id)
 
                 _uiState.update {
@@ -70,10 +75,12 @@ class PlantDetailScreenViewModel @Inject constructor(
 
     fun togglePlantInGarden() {
         viewModelScope.launch {
+            // Si todavia no hay planta cargada, no se puede guardar ni eliminar
             val plant = _uiState.value.plant ?: return@launch
 
             try {
                 if (_uiState.value.isSaved) {
+                    // Si ya estaba guardada, se quita de Mi Jardin
                     plantRepository.removePlantFromGarden(plant.id)
 
                     _uiState.update {
@@ -83,6 +90,7 @@ class PlantDetailScreenViewModel @Inject constructor(
                         )
                     }
                 } else {
+                    // Si no estaba guardada, se agrega a Mi Jardin
                     plantRepository.savePlantInGarden(plant)
 
                     _uiState.update {

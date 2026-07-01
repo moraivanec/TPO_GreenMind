@@ -23,6 +23,7 @@ class PlantListScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PlantListScreenState())
     val uiState: StateFlow<PlantListScreenState> = _uiState.asStateFlow()
 
+    // Guarda la búsqueda/carga actual para poder cancelarla si se inicia otra
     private var fetchJob: Job? = null
 
     init {
@@ -31,6 +32,7 @@ class PlantListScreenViewModel @Inject constructor(
     }
 
     private fun loadUserName() {
+        // Obtiene el nombre del usuario autenticado con Firebase
         val name = firebaseAuth.currentUser?.displayName ?: "Usuario"
 
         _uiState.update {
@@ -39,6 +41,7 @@ class PlantListScreenViewModel @Inject constructor(
     }
 
     fun searchChange(value: String) {
+        // Actualiza el texto ingresado en el buscador
         _uiState.update {
             it.copy(searchQuery = value)
         }
@@ -47,10 +50,12 @@ class PlantListScreenViewModel @Inject constructor(
     }
 
     fun fetchPlants(delayMillis: Long = 0) {
+        // Cancela una carga anterior si todavia estaba en curso
         fetchJob?.cancel()
 
         fetchJob = viewModelScope.launch {
 
+            // Se usa delay cuando la carga viene desde el buscador
             if (delayMillis > 0) {
                 delay(delayMillis)
             }
@@ -63,6 +68,7 @@ class PlantListScreenViewModel @Inject constructor(
             }
 
             try {
+                // Solicita las plantas al repo según el texto de búsqueda
                 val plants = plantRepository.fetchPlants(
                     _uiState.value.searchQuery
                 )

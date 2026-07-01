@@ -2,8 +2,8 @@ package com.example.greenmind
 
 import com.example.greenmind.components.buscar.BuscarScreenViewModel
 import com.example.greenmind.data.Plant
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertFalse
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -15,6 +15,9 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+
+// Prueba que cuando el usuario busca una planta, se actualice el listado
+// Y que cuando la búsqueda esté vacía, se limpie el estado
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BuscarScreenViewModelTest {

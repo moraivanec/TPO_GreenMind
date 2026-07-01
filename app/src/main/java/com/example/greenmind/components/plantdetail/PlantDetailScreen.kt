@@ -11,12 +11,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.greenmind.components.commons.PlantUiItemDetail
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindPrimary
 
 @Composable
 fun PlantDetailScreen(
@@ -28,10 +29,12 @@ fun PlantDetailScreen(
     val uiState by vm.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
+    // Cada vez que cambia el ID de la planta, se carga su detalle
     LaunchedEffect(plantId) {
         vm.setPlantId(plantId)
     }
 
+    // Muestra un Toast cuando el viewmodel informa que la planta fue guardada o eliminada
     LaunchedEffect(uiState.savedMessage) {
         uiState.savedMessage?.let { message ->
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -42,8 +45,9 @@ fun PlantDetailScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
     ) {
+        // Muestra carga, error o detalle según el estado actual
         when {
             uiState.isLoading -> {
                 Box(
@@ -51,7 +55,7 @@ fun PlantDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
-                        color = Color(0xFF557B45)
+                        color = GreenMindPrimary
                     )
                 }
             }
@@ -63,15 +67,13 @@ fun PlantDetailScreen(
                 ) {
                     Text(
                         text = uiState.errorMessage ?: "",
-                        color = Color(0xFF557B45)
+                        color = GreenMindPrimary
                     )
                 }
             }
 
             uiState.plant != null -> {
-                val plant = uiState.plant
-
-                if (plant != null) {
+                uiState.plant?.let { plant ->
                     PlantUiItemDetail(
                         plant = plant,
                         isSaved = uiState.isSaved,

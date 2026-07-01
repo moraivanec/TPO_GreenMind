@@ -15,10 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.greenmind.components.Screen
+import com.example.greenmind.ui.theme.GreenMindLight
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindTextBottom
+import com.example.greenmind.ui.theme.GreenMindTransparent
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @Composable
 fun GreenMindBottomBar(
@@ -28,11 +32,12 @@ fun GreenMindBottomBar(
     onMiJardinClick: () -> Unit,
     onChatClick: () -> Unit
 ) {
+    // Barra inferior reutilizable para navegar entre las secciones principales
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp)
-            .background(Color.White)
+            .background(GreenMindWhite)
             .padding(horizontal = 8.dp, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
@@ -74,8 +79,9 @@ private fun BottomBarItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val contentColor = if (isSelected) Color(0xFF557B45) else Color(0xFF7A7A7A)
-    val backgroundColor = if (isSelected) Color(0xFFEAF3E4) else Color.Transparent
+    // Cambia el color del ítem si corresponde a la pantalla actual
+    val contentColor = if (isSelected) GreenMindPrimary else GreenMindTextBottom
+    val backgroundColor = if (isSelected) GreenMindLight else GreenMindTransparent
 
     Column(
         modifier = Modifier

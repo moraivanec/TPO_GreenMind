@@ -14,6 +14,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+// Prueba que al enviar un mensaje se agregue primero la pregunta del usuario
+// después la respuesta del asistente, que el input se limpie
+// y que el estado de carga finalice correctamente
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChatIAScreenViewModelTest {
 

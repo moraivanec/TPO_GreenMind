@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,6 +31,16 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.greenmind.data.PlantDetail
+import com.example.greenmind.ui.theme.GreenMindBackground
+import com.example.greenmind.ui.theme.GreenMindError
+import com.example.greenmind.ui.theme.GreenMindPrimary
+import com.example.greenmind.ui.theme.GreenMindSoft
+import com.example.greenmind.ui.theme.GreenMindSuccessSoft
+import com.example.greenmind.ui.theme.GreenMindTextBody
+import com.example.greenmind.ui.theme.GreenMindTextDark
+import com.example.greenmind.ui.theme.GreenMindTextGray
+import com.example.greenmind.ui.theme.GreenMindTextTitle
+import com.example.greenmind.ui.theme.GreenMindWhite
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -45,7 +54,7 @@ fun PlantUiItemDetail(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F6F1))
+            .background(GreenMindBackground)
             .verticalScroll(rememberScrollState())
     ) {
         Box(
@@ -53,16 +62,17 @@ fun PlantUiItemDetail(
                 .fillMaxWidth()
                 .height(260.dp)
         ) {
+            // Si la planta no tiene imagen, se muestra un placeholder
             if (plant.imageUrl.isBlank()) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color(0xFFDDE8D8)),
+                        .background(GreenMindSoft),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "Sin imagen disponible",
-                        color = Color(0xFF557B45)
+                        color = GreenMindPrimary
                     )
                 }
             } else {
@@ -74,12 +84,13 @@ fun PlantUiItemDetail(
                 )
             }
 
+            // Botón para volver a la pantalla anterior
             Box(
                 modifier = Modifier
                     .padding(18.dp)
                     .size(42.dp)
                     .clip(CircleShape)
-                    .background(Color.White)
+                    .background(GreenMindWhite)
                     .clickable {
                         onBackClick()
                     }
@@ -89,16 +100,17 @@ fun PlantUiItemDetail(
                 Text(
                     text = "‹",
                     style = MaterialTheme.typography.headlineSmall,
-                    color = Color(0xFF557B45)
+                    color = GreenMindPrimary
                 )
             }
 
+            // Botón (corazón) para guardar o quitar una planta de Mi Jardin
             Box(
                 modifier = Modifier
                     .padding(18.dp)
                     .size(42.dp)
                     .clip(CircleShape)
-                    .background(Color.White)
+                    .background(GreenMindWhite)
                     .clickable {
                         onSaveClick()
                     }
@@ -108,7 +120,7 @@ fun PlantUiItemDetail(
                 Text(
                     text = if (isSaved) "♥" else "♡",
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (isSaved) Color(0xFFD71920) else Color(0xFF557B45)
+                    color = if (isSaved) GreenMindError else GreenMindPrimary
                 )
             }
         }
@@ -120,11 +132,12 @@ fun PlantUiItemDetail(
         ) {
             Spacer(modifier = Modifier.height(14.dp))
 
+            // Tarjeta principal, con nombre, nombre científico, nivel y descripción
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White
+                    containerColor = GreenMindWhite
                 ),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 2.dp
@@ -137,7 +150,7 @@ fun PlantUiItemDetail(
                         text = plant.commonName,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF222222)
+                        color = GreenMindTextDark
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
@@ -145,7 +158,7 @@ fun PlantUiItemDetail(
                     Text(
                         text = plant.scientificName,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color(0xFF8A8A8A)
+                        color = GreenMindTextGray
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -153,13 +166,13 @@ fun PlantUiItemDetail(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(20.dp))
-                            .background(Color(0xFFD9F2DD))
+                            .background(GreenMindSuccessSoft)
                             .padding(horizontal = 12.dp, vertical = 5.dp)
                     ) {
                         Text(
                             text = "Nivel: ${plant.careLevel}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF557B45)
+                            color = GreenMindPrimary
                         )
                     }
 
@@ -169,13 +182,14 @@ fun PlantUiItemDetail(
                         text = plant.description,
                         style = MaterialTheme.typography.bodyMedium,
                         lineHeight = 20.sp,
-                        color = Color(0xFF4A4A4A)
+                        color = GreenMindTextBody
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Tarjetas con los datos de cuidado de la planta
             DetailCard(
                 title = "Riego",
                 text = plant.watering
@@ -198,6 +212,7 @@ fun PlantUiItemDetail(
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Botón principal para guardar o quitar una planta de Mi jardin
             Button(
                 onClick = {
                     onSaveClick()
@@ -207,12 +222,12 @@ fun PlantUiItemDetail(
                     .height(52.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSaved) Color(0xFFDDE8D8) else Color(0xFF557B45)
+                    containerColor = if (isSaved) GreenMindSoft else GreenMindPrimary
                 )
             ) {
                 Text(
                     text = if (isSaved) "♡ Quitar de Mi Jardín" else "♡ Guardar en Mi Jardín",
-                    color = if (isSaved) Color(0xFF557B45) else Color.White,
+                    color = if (isSaved) GreenMindPrimary else GreenMindWhite,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -233,7 +248,7 @@ fun DetailCard(
             .padding(vertical = 6.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = GreenMindWhite
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 1.dp
@@ -246,7 +261,7 @@ fun DetailCard(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF2A2A2A)
+                color = GreenMindTextTitle
             )
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -254,7 +269,7 @@ fun DetailCard(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color(0xFF4A4A4A),
+                color = GreenMindTextBody,
                 lineHeight = 18.sp
             )
         }

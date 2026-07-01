@@ -11,17 +11,21 @@ class FirestoreGardenRepository @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : IGardenRemoteRepository {
 
+    // Obtiene el ID del usuario autenticado
+    // Si no hay usuario logueado, lanza una excepción
     private fun getUserId(): String {
         return auth.currentUser?.uid
             ?: throw Exception("No hay usuario autenticado")
     }
 
+    // Devuelve la colección remota donde se guardan las plantas del usuario actual
     private fun getGardenCollection() =
         firestore
             .collection("users")
             .document(getUserId())
             .collection("garden")
 
+    // Guarda o actualiza una planta en FireStore dentro del jardín del usuario
     override suspend fun savePlant(plantDetail: PlantDetail) {
         val plantData = hashMapOf(
             "id" to plantDetail.id,
@@ -51,6 +55,7 @@ class FirestoreGardenRepository @Inject constructor(
             .await()
     }
 
+    // Obtiene desde FireStore todas las plantas guardadas por el usuario
     override suspend fun getSavedPlants(): List<PlantDetail> {
         val snapshot = getGardenCollection()
             .get()

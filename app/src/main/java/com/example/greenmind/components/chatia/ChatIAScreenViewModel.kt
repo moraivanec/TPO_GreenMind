@@ -36,10 +36,12 @@ class ChatIAScreenViewModel @Inject constructor(
     private fun sendQuestion(rawQuestion: String) {
         val question = rawQuestion.trim()
 
+        // Evita enviar mensajes vacíos
         if (question.isBlank()) {
             return
         }
 
+        // Evita enviar otra pregunta mientras la IA todavía está respondiendo
         if (_uiState.value.isLoading) {
             return
         }
@@ -49,6 +51,7 @@ class ChatIAScreenViewModel @Inject constructor(
             isFromUser = true
         )
 
+        // Agrega el mensaje del usuario, limpia el input y activa el estado de carga
         _uiState.update {
             it.copy(
                 inputMessage = "",
@@ -60,6 +63,7 @@ class ChatIAScreenViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
+                // Consulta al repo que se ocupa de comunicarse con Gemini
                 val answer = geminiRepository.askGardeningQuestion(question)
 
                 val assistantMessage = ChatMessage(

@@ -19,6 +19,7 @@ fun NavigationStack(
     onGoogleLoginClick: () -> Unit,
     onLogoutClick: () -> Unit
 ) {
+    // Define las pantallas disponibles y cuál es la primera pantalla de la app
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
@@ -53,6 +54,7 @@ fun NavigationStack(
             )
         }
 
+        // Ruta con parámetro dinámico para abrir el detalle de una planta específica
         composable(Screen.PlantDetail.route + "/{plantId}") {
             val stringId = it.arguments?.getString("plantId")
             val id = stringId?.toInt() ?: 0

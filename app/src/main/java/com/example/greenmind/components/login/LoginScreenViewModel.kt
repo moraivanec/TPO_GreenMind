@@ -14,6 +14,7 @@ class LoginScreenViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
+    // Canal interno para mandar eventos puntuales desde el viewModel hacia la pantalla
     private val _uiEvent = Channel<String>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
@@ -22,6 +23,7 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun checkAuthStatus() {
+        // Si firebase ya tiene un usuario activo, se envía un evento para navegar
         if (firebaseAuth.currentUser != null) {
             viewModelScope.launch {
                 _uiEvent.send("loginOK")
